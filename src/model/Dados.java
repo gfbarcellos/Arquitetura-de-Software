@@ -5,23 +5,27 @@
  */
 package model;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Arquivos {
-    
-    
+public class Dados {
     //Método para verificar se o arquivo existe
     //0 - Existe e está vazio
     //1 - Existe e está preenchido
     //2 - Arquivo não existe
-    public int VerificaArquivo( File file ) throws FileNotFoundException, IOException
+    public int VerificaDados( File file ) throws FileNotFoundException, IOException
     {
       
         //Verifica se o arquivo existe
@@ -41,12 +45,39 @@ public class Arquivos {
             }
         }
         return 1;
-    }   
+    }
     
-    public void CriaArqConfrontos() throws IOException
+    public ArrayList<String> BuscaTimes() throws FileNotFoundException, IOException
+    {
+        
+        ArrayList<String> retorno = new ArrayList<String>();
+        
+        InputStream file = new FileInputStream("times.txt");
+	InputStreamReader file_reader = new InputStreamReader(file);
+	BufferedReader buffer = new BufferedReader(file_reader);
+
+        String line = "";
+        int indice = 0;
+        
+        //Iteração no arquivo de times
+        while(line != null)
+        {   
+            //Busca a linha
+            line = buffer.readLine();
+            if (line != null) {
+                //Adiciona o time no vetor
+                retorno.add(line);
+                
+            }
+        }
+        
+        return retorno;
+        
+    }
+    
+    public void CriaConfrontos() throws IOException
     {
         FileWriter writerIndc = new FileWriter("confrontos.txt", true);
 	BufferedWriter buffWriterIndc = new BufferedWriter(writerIndc);
     }
-    
 }

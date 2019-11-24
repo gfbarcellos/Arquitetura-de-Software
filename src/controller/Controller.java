@@ -35,10 +35,10 @@ public class Controller {
             Torneio torneio = new Torneio();
             
             //Verifica se possui os times
-            if (torneio.VerificaTorneio()) 
+            if (torneio.VerificaTorneio("times")) 
             {   
                 //Chama a criação do torneio
-                torneio.CriaTorneio();
+                torneio.CriaTorneio(data);
             }
         }
         else
@@ -62,5 +62,6 @@ public class Controller {
     {
         NovoTorneio torneio = new NovoTorneio();
         torneio.setVisible(true);
+        
     }
 }

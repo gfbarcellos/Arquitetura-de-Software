@@ -1,0 +1,12 @@
+2020-08-23;1;Barcelona;0;Borussia;0;false
+2020-08-23;1;Inter;0;Slavia;0;false
+2020-08-26;2;Inter;0;Barcelona;0;false
+2020-08-26;2;Slavia;0;Borussia;0;false
+2020-08-30;3;Barcelona;0;Slavia;0;false
+2020-08-30;3;Borussia;0;Inter;0;false
++20199-08-21;1;Barcelona;0;Borussia;0;false
++20199-08-21;1;Inter;0;Slavia;0;false
++20199-08-25;2;Inter;0;Barcelona;0;false
++20199-08-25;2;Slavia;0;Borussia;0;false
++20199-08-28;3;Barcelona;0;Slavia;0;false
++20199-08-28;3;Borussia;0;Inter;0;false
