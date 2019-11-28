@@ -5,7 +5,9 @@
  */
 package controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import model.Dados;
 import model.Torneio;
 import view.Menu;
 import view.NovoTorneio;
@@ -21,7 +23,7 @@ public class Controller {
         principal.setVisible(true);
     }
     
-    public void NovoTorneio(String data) throws IOException
+    public void NovoTorneio(String data) throws IOException, FileNotFoundException, ClassNotFoundException
     {   
         //String vazia para verificação
         String vazio = new String();
@@ -33,9 +35,10 @@ public class Controller {
             Menu();
             
             Torneio torneio = new Torneio();
+            Dados dados = new Dados();
             
             //Verifica se possui os times
-            if (torneio.VerificaTorneio("times")) 
+            if (dados.VerificaDados())    
             {   
                 //Chama a criação do torneio
                 torneio.CriaTorneio(data);

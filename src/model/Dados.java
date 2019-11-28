@@ -18,66 +18,59 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import model.Arquivos;
 
 
 public class Dados {
-    //Método para verificar se o arquivo existe
-    //0 - Existe e está vazio
-    //1 - Existe e está preenchido
-    //2 - Arquivo não existe
-    public int VerificaDados( File file ) throws FileNotFoundException, IOException
-    {
-      
-        //Verifica se o arquivo existe
-        if(!file.exists()) 
-        { 
-            return 2;
-        } 
-        else //Se existe verifica se possui informações no arquivo
+    
+    private final String FormaDados = "A";
+    
+    public boolean VerificaDados( ) throws FileNotFoundException, IOException, ClassNotFoundException
+    {   
+        
+        if( this.FormaDados.equals("A") )
         {
-            LineNumberReader linhas = new LineNumberReader(new FileReader(file));
-            linhas.skip(file.length()); 
-            
-            //Contador de quabras de linhas, por isso, soma-se 1 a última linha
-            if( ( linhas.getLineNumber() + 1 ) == 0 )
-            {
-                 return 0;
-            }
+            Arquivos arquivo = new Arquivos();
+            return arquivo.VerificaTorneio();
         }
-        return 1;
+        else
+        {
+            BancoDeDados banco = new BancoDeDados();
+            return banco.VerificaTorneio();
+        }
     }
     
     public ArrayList<String> BuscaTimes() throws FileNotFoundException, IOException
     {
         
-        ArrayList<String> retorno = new ArrayList<String>();
-        
-        InputStream file = new FileInputStream("times.txt");
-	InputStreamReader file_reader = new InputStreamReader(file);
-	BufferedReader buffer = new BufferedReader(file_reader);
-
-        String line = "";
-        int indice = 0;
-        
-        //Iteração no arquivo de times
-        while(line != null)
-        {   
-            //Busca a linha
-            line = buffer.readLine();
-            if (line != null) {
-                //Adiciona o time no vetor
-                retorno.add(line);
-                
-            }
+        if( this.FormaDados.equals("A") )
+        {
+            Arquivos arquivo = new Arquivos();
+            return arquivo.MontaListaTimes();
         }
-        
-        return retorno;
+        else
+        {
+            BancoDeDados banco = new BancoDeDados();
+            return banco.MontaListaTimes();
+        }
         
     }
     
-    public void CriaConfrontos() throws IOException
+    public void Armazena(List<Confrontos> listaConfrontos) throws IOException
     {
-        FileWriter writerIndc = new FileWriter("confrontos.txt", true);
-	BufferedWriter buffWriterIndc = new BufferedWriter(writerIndc);
+        if( this.FormaDados.equals("A") )
+        {
+            Arquivos arquivo = new Arquivos();
+            arquivo.ArmazenaConfrontos(listaConfrontos);
+        }
+        else
+        {
+            BancoDeDados banco = new BancoDeDados();
+            banco.ArmazenaConfrontos(listaConfrontos);
+        }
+        
+        
     }
+
 }

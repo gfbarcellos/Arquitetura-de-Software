@@ -5,9 +5,12 @@
  */
 package interfaces;
 
-public interface ILogin {
+import java.util.ArrayList;
+import model.Confrontos;
+import java.util.List;
+
+public interface IArmazenamento {
     
-    void Sair();
+    void armazenaConfrontos();
     
-    void Entrar();
 }

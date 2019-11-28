@@ -29,46 +29,11 @@ public class Torneio {
         List<Confrontos> listaConfrontos = new ArrayList<>();
         
         listaConfrontos = CriaConfrontos(listaDeTimes, data);
-        armazenaConfrontos(listaConfrontos);
-         JOptionPane.showMessageDialog(null, "Arquivo confrontos criado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        dados.Armazena(listaConfrontos);
+        JOptionPane.showMessageDialog(null, "Arquivo confrontos criado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void armazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException
-    {
-        FileWriter writer;
-	writer = new FileWriter("confrontos.txt", true);
-
-        for(Confrontos linha: listaConfrontos)
-        { 
-            writer.write(linha.getData()+";"+linha.getRodada()+";"+linha.getTimeMandante()+";"+linha.getGolMandante()+";"+linha.getTimeVisitante()+";"+linha.getGolVisitante()+";"+linha.getJogoRealizado()+"\n");
-        }
-        writer.flush();
-	writer.close();
-    }
-    
-    public boolean VerificaTorneio(String nome) throws IOException
-    {   
-        String arquivo = nome + ".txt";
-        File file_times = new File(arquivo); 
-        Dados dados = new Dados();
-        
-        //Faz a verificação da situação do arquivo
-        int info_arquivo = dados.VerificaDados(file_times);
-        
-        //Verifica o status do arquivo de times
-        switch (info_arquivo) {
-            case 1:
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Arquivo de times não existe", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
-             default:
-                JOptionPane.showMessageDialog(null, "Arquivo de times está vazio", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
-        }
-        return true;
-    }
-    
+       
     private LocalDate converteData(String data)
     {
         String vetorData[] = data.split("/");
