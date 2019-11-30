@@ -132,10 +132,11 @@ public class Classificacao {
             else if(retorno.getSaldo() < 0)
             {
                 retorno.setDerrota(1);
+                retorno.setPontos(0);
             }
             else
             {
-                retorno.setEmpate(0);
+                retorno.setEmpate(1);
                 retorno.setPontos(1);
             }
 
@@ -167,36 +168,46 @@ public class Classificacao {
         for(model.Confrontos linha: confrontos)
         { 
             //Na primeira rodada os times seram inseridos na lista da tabela
-            /*if (linha.getRodada() == 1)
-            {   
-                System.out.println("Passei aq1");
-                //Se o jogo foi realizado 
-                if(linha.getJogoRealizado())
-                {
-                    
-                }
-                else
-                {
-                    System.out.println("Passei aq");
-                    //Busca dados do time mandante e visitante
-                    retorno.add(classificacao.MontaInfoClassificacaoInicial(linha, true));
-                    retorno.add(classificacao.MontaInfoClassificacaoInicial(linha, false));
-                }
-            }*/
             if (linha.getRodada() == 1)
             {
                 retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
                 retorno.add(classificacao.MontaInfoClassificacao(linha, false, linha.getRodada()));
             }
-            else
+            else 
             {   
                 int indice = 0;
                 for(Classificacao linhaRet: retorno)
                 {
-                    if( linhaRet.getTime().equals(this) )
+
+                    if( linhaRet.getTime().equals(linha.getTimeVisitante()) )
+                    {
+                        classificacaoAux = classificacao.MontaInfoClassificacao(linha, false, linha.getRodada());
+                        classificacaoAux.setJogos(classificacaoAux.getJogos() + linhaRet.getJogos());
+                        classificacaoAux.setPontos(classificacaoAux.getPontos() + linhaRet.getPontos());
+                        classificacaoAux.setVitoria(classificacaoAux.getVitoria() + linhaRet.getVitoria());
+                        classificacaoAux.setEmpate(classificacaoAux.getEmpate() + linhaRet.getEmpate());
+                        classificacaoAux.setDerrota(classificacaoAux.getDerrota() + linhaRet.getDerrota());
+                        classificacaoAux.setGolsP(classificacaoAux.getGolsP() + linhaRet.getGolsP());
+                        classificacaoAux.setGolsC(classificacaoAux.getGolsC() + linhaRet.getGolsC());
+                        classificacaoAux.setSaldo(classificacaoAux.getSaldo() + linhaRet.getSaldo());
+                        retorno.set(indice, classificacaoAux);
+                    }
+                    
+                    if( linhaRet.getTime().equals(linha.getTimeMandante()) )
                     {
                         
+                        classificacaoAux = classificacao.MontaInfoClassificacao(linha, true, linha.getRodada());
+                        classificacaoAux.setJogos(classificacaoAux.getJogos() + linhaRet.getJogos());
+                        classificacaoAux.setPontos(classificacaoAux.getPontos() + linhaRet.getPontos());
+                        classificacaoAux.setVitoria(classificacaoAux.getVitoria() + linhaRet.getVitoria());
+                        classificacaoAux.setEmpate(classificacaoAux.getEmpate() + linhaRet.getEmpate());
+                        classificacaoAux.setDerrota(classificacaoAux.getDerrota() + linhaRet.getDerrota());
+                        classificacaoAux.setGolsP(classificacaoAux.getGolsP() + linhaRet.getGolsP());
+                        classificacaoAux.setGolsC(classificacaoAux.getGolsC() + linhaRet.getGolsC());
+                        classificacaoAux.setSaldo(classificacaoAux.getSaldo() + linhaRet.getSaldo());
+                        retorno.set(indice, classificacaoAux);
                     }
+
                     indice++;
                 }
             }
