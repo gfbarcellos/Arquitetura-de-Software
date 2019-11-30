@@ -5,12 +5,17 @@
  */
 package interfaces;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import model.Confrontos;
 import java.util.List;
 
 public interface IArmazenamento {
     
-    void armazenaConfrontos();
-    
+    void ArmazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException;
+    ArrayList<String> MontaListaTimes() throws FileNotFoundException, IOException;
+    ArrayList<Confrontos> DadosConfrontos() throws FileNotFoundException, IOException; 
+    int VerificaTimes() throws FileNotFoundException, IOException;
+    boolean VerificaTorneio( ) throws IOException;
 }

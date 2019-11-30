@@ -105,4 +105,11 @@ public class BancoDeDados {
         
     }
     
+    public ArrayList<Confrontos> DadosConfrontos()
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<Confrontos>();
+        
+        return retorno;
+    }
+    
 }

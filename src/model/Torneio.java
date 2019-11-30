@@ -5,18 +5,13 @@
  */
 package model;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import static java.time.DayOfWeek.SUNDAY;
 import static java.time.DayOfWeek.WEDNESDAY;
 import static java.time.temporal.TemporalAdjusters.next;
 import java.util.List;
-import java.util.Spliterator;
 import javax.swing.JOptionPane;
 
 public class Torneio {
@@ -34,7 +29,7 @@ public class Torneio {
     }
     
        
-    private LocalDate converteData(String data)
+    private LocalDate ConverteData(String data)
     {
         String vetorData[] = data.split("/");
         int dia = Integer.parseInt(vetorData[0]);
@@ -43,13 +38,25 @@ public class Torneio {
         LocalDate dataAtual   = LocalDate.of(ano, mes, dia);
         return dataAtual;
     }
+    private LocalDate VerificaData(LocalDate dataAtual)
+    {
+        if(dataAtual.getDayOfWeek().equals("SUNDAY") || dataAtual.getDayOfWeek().equals("WEDNESDAY"))
+        {
+             return dataAtual;
+        }
+        else
+        {
+            return ProxData(dataAtual);
+        }
+         
+    }
     
-    private LocalDate proxData(LocalDate dataAtual, int rodada)
+    private LocalDate ProxData(LocalDate dataAtual)
     {
 
         LocalDate proxQuarta  = dataAtual.with(next(WEDNESDAY));
         LocalDate proxDomingo = dataAtual.with(next(SUNDAY));
-
+        
         //Se a próxima quarta for depois do próximo domingo
         if (proxQuarta.isAfter(proxDomingo)) 
         {   
@@ -85,9 +92,11 @@ public class Torneio {
         }
         int timesAuxQuant = timesAux.size();
         
-        //Converte a data de ínicio
-        LocalDate dataAtual = converteData(data);
+        //Converte a data de ínicio para o formato
+        LocalDate dataAtual = ConverteData(data);
         
+        //Verifica se o dia digitado já uma quarta ou domingo
+        dataAtual = VerificaData(dataAtual);
         for( int i = 0; i < ( num_time - 1 ); i++ )
         {
 
@@ -104,7 +113,7 @@ public class Torneio {
                 timeM = timesAux.get(timeIndice); 
                 timeV = listaDeTimes.get(0);
             }
-            dataAtual = proxData(dataAtual, i);
+            
             Confrontos confrontos = new Confrontos( dataAtual , i+1 , timeM, 0, timeV, 0, false);
             retornoConfrontos.add(confrontos);
             
@@ -113,11 +122,10 @@ public class Torneio {
             {
                 int primeiroTime = ( i + j  ) % timesAuxQuant;
                 int segundoTime  = ( i + timesAuxQuant - j ) % timesAuxQuant;
-                //System.out.println( timesAux.get(primeiroTime) + " x " + timesAux.get(segundoTime) );
                 confrontos = new Confrontos( dataAtual , i+1 , timesAux.get(primeiroTime), 0, timesAux.get(segundoTime) , 0, false);
                 retornoConfrontos.add(confrontos);
             }
-            
+            dataAtual = ProxData(dataAtual);
             
         }
         

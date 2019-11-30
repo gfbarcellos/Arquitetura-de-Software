@@ -5,21 +5,11 @@
  */
 package model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
-import model.Arquivos;
+
 
 
 public class Dados {
@@ -71,6 +61,20 @@ public class Dados {
         }
         
         
+    }
+    
+    public ArrayList<Confrontos> BuscaDadosConfrontos() throws IOException
+    {
+        if( this.FormaDados.equals("A") )
+        {
+            Arquivos arquivo = new Arquivos();
+            return arquivo.DadosConfrontos();
+        }
+        else
+        {
+            BancoDeDados banco = new BancoDeDados();
+           return banco.DadosConfrontos();
+        }
     }
 
 }

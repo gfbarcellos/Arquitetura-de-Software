@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,6 +121,8 @@ public class NovoTorneio extends javax.swing.JFrame {
         try {
             controller.NovoTorneio(jFormattedTextField1.getText());
         } catch (IOException ex) {
+            Logger.getLogger(NovoTorneio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(NovoTorneio.class.getName()).log(Level.SEVERE, null, ex);
         }
         

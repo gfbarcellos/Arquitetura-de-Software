@@ -7,8 +7,11 @@ package controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import model.Confrontos;
 import model.Dados;
 import model.Torneio;
+import view.Classificacao;
 import view.Menu;
 import view.NovoTorneio;
 
@@ -51,9 +54,16 @@ public class Controller {
 
     }
 
-    public void Classificacao()
+    public void Classificacao() throws IOException
     {
+        Classificacao classificacao = new Classificacao();
+        classificacao.setVisible(true);
         
+        Dados dados = new Dados();
+        model.Classificacao mClassificacao = new model.Classificacao();
+        //lassificacao tabClassificacao = new Classificacao();
+        ArrayList<model.Classificacao> listaClas = mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos());
+        classificacao.CarregaDados(listaClas);
     }
     
     public void Confrontos()

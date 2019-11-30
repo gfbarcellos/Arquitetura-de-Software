@@ -15,19 +15,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 
-public class Arquivos{
+public class Arquivos implements interfaces.IArmazenamento {
     
+    @Override
     public boolean VerificaTorneio( ) throws IOException
     {   
-        File file_times = new File("times.txt"); 
-        
         //Faz a verificação da situação do arquivo
-        int info_arquivo = VerificaTimes(file_times);
+        int info_arquivo = VerificaTimes();
         
         //Verifica o status do arquivo de times
         switch (info_arquivo) {
@@ -43,8 +43,10 @@ public class Arquivos{
         return true;
     }
     
-    public int VerificaTimes( File file) throws FileNotFoundException, IOException
+    @Override
+    public int VerificaTimes() throws FileNotFoundException, IOException
     {
+        File file = new File("times.txt");
         //Verifica se o arquivo existe
         if(!file.exists()) 
         { 
@@ -64,6 +66,7 @@ public class Arquivos{
         return 1;
     }
     
+    @Override
     public ArrayList<String> MontaListaTimes() throws FileNotFoundException, IOException
     {
         
@@ -74,8 +77,6 @@ public class Arquivos{
 	BufferedReader buffer = new BufferedReader(file_reader);
 
         String line = "";
-        int indice = 0;
-        
         //Iteração no arquivo de times
         while(line != null)
         {   
@@ -92,10 +93,11 @@ public class Arquivos{
         
     }
     
+    @Override
     public void ArmazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException
     {
         FileWriter writer;
-	writer = new FileWriter("confrontos.txt", true);
+	writer = new FileWriter("confrontos.txt", false);
 
         for(Confrontos linha: listaConfrontos)
         { 
@@ -103,5 +105,39 @@ public class Arquivos{
         }
         writer.flush();
 	writer.close();
+    }
+    
+    @Override
+    public ArrayList<Confrontos> DadosConfrontos() throws FileNotFoundException, IOException
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<Confrontos>();
+        
+        InputStream file = new FileInputStream("confrontos.txt");
+	InputStreamReader file_reader = new InputStreamReader(file);
+	BufferedReader buffer = new BufferedReader(file_reader);
+
+        String line = "";
+        //Iteração no arquivo de times
+        while(line != null)
+        {   
+            //Busca a linha
+            line = buffer.readLine();
+            if (line != null)        
+            {
+                String[] dados = line.split(";");
+                
+                LocalDate data = LocalDate.parse(dados[0]); 
+                int rodada = Integer.parseInt(dados[1]);
+                int golsM  = Integer.parseInt(dados[3]);
+                int golsV  = Integer.parseInt(dados[5]);
+                boolean jogo = Boolean.parseBoolean(dados[6]);
+                
+                Confrontos confrontos = new Confrontos(data, rodada, dados[2], golsM, dados[4], golsV, jogo);
+                //Adiciona o time no vetor
+                retorno.add(confrontos); 
+            }
+        }
+        
+        return retorno;
     }
 }
