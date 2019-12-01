@@ -223,7 +223,7 @@ public class Classificacao {
                     retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
                 }
                 else
-                {
+                {   
                     retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
                     retorno.add(classificacao.MontaInfoClassificacao(linha, false, linha.getRodada()));
                 }

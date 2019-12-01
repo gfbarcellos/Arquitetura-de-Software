@@ -15,99 +15,154 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
-public class BancoDeDados {
+public class BancoDeDados implements interfaces.IArmazenamento{
     
-    public void ArmazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException
-    {
-        FileWriter writer;
-	writer = new FileWriter("confrontos.txt", true);
-
-        for(Confrontos linha: listaConfrontos)
-        { 
-            writer.write(linha.getData()+";"+linha.getRodada()+";"+linha.getTimeMandante()+";"+linha.getGolMandante()+";"+linha.getTimeVisitante()+";"+linha.getGolVisitante()+";"+linha.getJogoRealizado()+"\n");
-        }
-        writer.flush();
-	writer.close();
-    }
-    
-    public boolean VerificaTorneio( ) throws IOException
+    @Override
+    public boolean VerificaTorneio( String valor ) throws IOException
     {   
-        File file_times = new File("times.txt"); 
-        
         //Faz a verificação da situação do arquivo
-        int info_arquivo = VerificaTimes(file_times);
+        int info_tab = VerificaDado(valor);
         
-        //Verifica o status do arquivo de times
-        switch (info_arquivo) {
-            case 1:
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Arquivo de times não existe", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
-             default:
-                JOptionPane.showMessageDialog(null, "Arquivo de times está vazio", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
+        if(info_tab == 1)
+        {
+            JOptionPane.showMessageDialog(null, "Tabela de "+ valor +" está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        return true;
+        else
+        {
+            return true;
+        }
+
     }
     
-    public int VerificaTimes( File file) throws FileNotFoundException, IOException
+    @Override
+    public int VerificaDado(String valor) throws FileNotFoundException, IOException
     {
-        //Verifica se o arquivo existe
-        if(!file.exists()) 
-        { 
-            return 2;
-        } 
-        else //Se existe verifica se possui informações no arquivo
-        {
-            LineNumberReader linhas = new LineNumberReader(new FileReader(file));
-            linhas.skip(file.length()); 
-            
-            //Contador de quabras de linhas, por isso, soma-se 1 a última linha
-            if( ( linhas.getLineNumber() + 1 ) == 0 )
+         
+        ConexaoBanco conexao = new ConexaoBanco();
+        Connection conn = conexao.Conexao();
+        PreparedStatement ps =  null;
+        ResultSet rs = null;
+        
+        try {
+            ps = conn.prepareStatement("select * from "+valor);
+            rs = ps.executeQuery();
+            while (rs.next())
             {
-                 return 0;
-            }
+                
+                return 0;
+            } 
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return 1;
     }
     
+    @Override
     public ArrayList<String> MontaListaTimes() throws FileNotFoundException, IOException
     {
         
         ArrayList<String> retorno = new ArrayList<String>();
-        
-        InputStream file = new FileInputStream("times.txt");
-	InputStreamReader file_reader = new InputStreamReader(file);
-	BufferedReader buffer = new BufferedReader(file_reader);
 
-        String line = "";
-        int indice = 0;
+        ConexaoBanco conexao = new ConexaoBanco();
+        Connection conn = conexao.Conexao();
+        PreparedStatement ps =  null;
+        ResultSet rs = null;
         
-        //Iteração no arquivo de times
-        while(line != null)
-        {   
-            //Busca a linha
-            line = buffer.readLine();
-            if (line != null) {
-                //Adiciona o time no vetor
-                retorno.add(line);
-                
-            }
+        try {
+            ps = conn.prepareStatement("select * from times");
+            rs = ps.executeQuery();
+            while (rs.next())
+            {
+                retorno.add(rs.getString("time"));
+            } 
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return retorno;
         
     }
     
-    public ArrayList<Confrontos> DadosConfrontos()
+    @Override
+    public void ArmazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException
     {
-        ArrayList<Confrontos> retorno = new ArrayList<Confrontos>();
+        ConexaoBanco conexao = new ConexaoBanco();
+        Connection conn = conexao.Conexao();
+        
+        PreparedStatement ps =  null;
+        ResultSet rs = null;
+        String query = new String();
+        
+        try {
+            ps = conn.prepareStatement("delete from confrontos");
+            ps.executeUpdate();
+
+            for(Confrontos linha: listaConfrontos)
+            { 
+
+                query = "insert into confrontos(data, rodada, timeMandante,golMandante,timeVisitante,golVisitante,rodadaValida)"
+                       + "values("+"\""+linha.getData()+"\","+linha.getRodada()+",\""+linha.getTimeMandante()+"\","+linha.getGolMandante()+",\""+linha.getTimeVisitante()+"\","+linha.getGolVisitante()+","+linha.getJogoRealizado()+")";
+                ps = conn.prepareStatement(query);
+                ps.executeUpdate();
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    @Override
+    public ArrayList<Confrontos> DadosConfrontos() throws FileNotFoundException, IOException
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<>();
+        
+        ConexaoBanco conexao = new ConexaoBanco();
+        Connection conn = conexao.Conexao();
+        
+        PreparedStatement ps =  null;
+        ResultSet rs = null;
+        String query = new String();
+        
+        try {
+            ps = conn.prepareStatement("select * from confrontos");
+            rs = ps.executeQuery();
+            while (rs.next())
+            {
+                LocalDate data = LocalDate.parse(rs.getString("data")); 
+                int rodada = Integer.parseInt(rs.getString("rodada"));
+                int golsM  = Integer.parseInt(rs.getString("golMandante"));
+                int golsV  = Integer.parseInt(rs.getString("golVisitante"));
+                boolean jogo = true;
+                if(rs.getString("rodadaValida").equals("0"))
+                {
+                    jogo = false;
+                }
+                Confrontos confrontos = new Confrontos(data, rodada, rs.getString("timeMandante"), golsM, rs.getString("timeVisitante"), golsV, jogo);
+                
+                //Adiciona o time no vetor
+                retorno.add(confrontos); 
+            } 
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }    
         
         return retorno;
     }

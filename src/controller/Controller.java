@@ -58,8 +58,7 @@ public class Controller {
             Classificacao classificacao = new Classificacao();
             classificacao.setVisible(true);
             model.Classificacao mClassificacao = new model.Classificacao();
-            //classificacao.CarregaDados(mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos()));
-            classificacao.CarregaDados( mClassificacao.OrdenaClassificacao(mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos())));
+           classificacao.CarregaDados( mClassificacao.OrdenaClassificacao(mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos())));
         }
         else
         {

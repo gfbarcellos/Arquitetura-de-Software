@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Dados {
     
-    private final String FormaDados = "A";
+    private final String FormaDados = "B";
     
     public boolean VerificaDados( String valor ) throws FileNotFoundException, IOException, ClassNotFoundException
     {   
@@ -27,7 +27,7 @@ public class Dados {
         else
         {
             BancoDeDados banco = new BancoDeDados();
-            return banco.VerificaTorneio();
+            return banco.VerificaTorneio(valor);
         }
     }
     
