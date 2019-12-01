@@ -8,12 +8,13 @@ package controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import model.Confrontos;
+import javax.swing.table.DefaultTableModel;
 import model.Dados;
 import model.Torneio;
 import view.Classificacao;
 import view.Menu;
 import view.NovoTorneio;
+import view.Confrontos;
 
 public class Controller {
     
@@ -31,21 +32,15 @@ public class Controller {
         //String vazia para verificação
         String vazio = new String();
         
+
         //Verifica se a data está no formato correto
-        if (!data.equals(vazio)) 
+        if (!data.equals(vazio) ) 
         {   
             //Chama o menu novamente
             Menu();
             
             Torneio torneio = new Torneio();
-            Dados dados = new Dados();
-            
-            //Verifica se possui os times
-            if (dados.VerificaDados())    
-            {   
-                //Chama a criação do torneio
-                torneio.CriaTorneio(data);
-            }
+            torneio.CriaTorneio(data);
         }
         else
         {
@@ -54,27 +49,79 @@ public class Controller {
 
     }
 
-    public void Classificacao() throws IOException
-    {
-        Classificacao classificacao = new Classificacao();
-        classificacao.setVisible(true);
-        
+    public void Classificacao() throws IOException, FileNotFoundException, ClassNotFoundException
+    {   
         Dados dados = new Dados();
-        model.Classificacao mClassificacao = new model.Classificacao();
-        //lassificacao tabClassificacao = new Classificacao();
-        ArrayList<model.Classificacao> listaClas = mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos());
-        classificacao.CarregaDados(listaClas);
+        
+        if (dados.VerificaDados("confrontos")) 
+        {
+            Classificacao classificacao = new Classificacao();
+            classificacao.setVisible(true);
+            model.Classificacao mClassificacao = new model.Classificacao();
+            //classificacao.CarregaDados(mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos()));
+            classificacao.CarregaDados( mClassificacao.OrdenaClassificacao(mClassificacao.MontaTabClassificacao(dados.BuscaDadosConfrontos())));
+        }
+        else
+        {
+             Menu();
+        }
+ 
     }
     
-    public void Confrontos()
+    public void Confrontos() throws IOException, FileNotFoundException, ClassNotFoundException
     {
+        Dados dados = new Dados();
+        Torneio torneio = new Torneio();
         
+        if (dados.VerificaDados("confrontos")) 
+        {
+            Confrontos confrontos = new Confrontos();
+            confrontos.setVisible(true);
+            
+            ArrayList<model.Confrontos> listaConfrontos = torneio.EliminaBye(dados.BuscaDadosConfrontos());
+            
+            confrontos.AdicionaComboBox(torneio.NumeroDeRodadas(listaConfrontos));
+            confrontos.CarregaRodada(torneio.BuscaConfrontosDaRodada(1, listaConfrontos));
+        }
+        else
+        {
+             Menu();
+        }
     }
     
-    public void TelaData()
+    public void TelaData() throws IOException, FileNotFoundException, ClassNotFoundException
     {
-        NovoTorneio torneio = new NovoTorneio();
-        torneio.setVisible(true);
+        Dados dados = new Dados();
         
+        if (dados.VerificaDados("times")) 
+        {
+            NovoTorneio torneio = new NovoTorneio();
+            torneio.setVisible(true);
+        }
+        else
+        {
+             Menu();
+        }
+ 
     }
+    
+    public void Pesquisar(int rodada) throws IOException
+    {
+        Dados dados = new Dados();
+        Torneio torneio = new Torneio();
+        Confrontos confrontos = new Confrontos();
+        
+        ArrayList<model.Confrontos> listaConfrontos = torneio.EliminaBye(dados.BuscaDadosConfrontos());
+        confrontos.AdicionaComboBox(torneio.NumeroDeRodadas(listaConfrontos));
+        confrontos.CarregaRodada(torneio.BuscaConfrontosDaRodada(rodada, listaConfrontos));
+        confrontos.SetComboBox(rodada);
+        confrontos.setVisible(true);
+    }
+    
+    public void ConfirmaRodada( DefaultTableModel linha, int rodada ) throws IOException
+    {
+        Torneio torneio = new Torneio();
+        torneio.MontaResultadosDaRodada(linha, rodada);
+    }
+         
 }

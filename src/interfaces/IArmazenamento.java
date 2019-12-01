@@ -16,6 +16,6 @@ public interface IArmazenamento {
     void ArmazenaConfrontos(List<Confrontos> listaConfrontos) throws IOException;
     ArrayList<String> MontaListaTimes() throws FileNotFoundException, IOException;
     ArrayList<Confrontos> DadosConfrontos() throws FileNotFoundException, IOException; 
-    int VerificaTimes() throws FileNotFoundException, IOException;
-    boolean VerificaTorneio( ) throws IOException;
+    int VerificaDado(String valor) throws FileNotFoundException, IOException;
+    boolean VerificaTorneio( String valor ) throws IOException;
 }

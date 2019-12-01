@@ -13,6 +13,7 @@ import static java.time.DayOfWeek.WEDNESDAY;
 import static java.time.temporal.TemporalAdjusters.next;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Torneio {
     
@@ -130,5 +131,91 @@ public class Torneio {
         }
         
         return retornoConfrontos;
+    }
+    
+    public int NumeroDeRodadas( ArrayList<Confrontos> listaConfrontos )
+    {
+        int rodada = 0;
+        for(model.Confrontos linha: listaConfrontos)
+        { 
+            rodada = linha.getRodada();
+        }
+        
+        return rodada;
+    }
+    
+    public ArrayList<Confrontos> BuscaConfrontosDaRodada(int rodada, ArrayList<Confrontos> listaConfrontos)
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<>();
+        
+        for(model.Confrontos linha: listaConfrontos)
+        { 
+            if( linha.getRodada() == rodada ) 
+            {
+                retorno.add(linha);
+            }
+        }
+        
+        return retorno;
+    }
+    
+    public void MontaResultadosDaRodada(DefaultTableModel linha, int rodada) throws IOException
+    {
+        Dados dados = new Dados();
+        
+        ArrayList<model.Confrontos> listaConfrontos = dados.BuscaDadosConfrontos();
+        ArrayList<model.Confrontos> novaListaConfrontos = new ArrayList<>();
+
+        for(model.Confrontos linhaConfrontos: listaConfrontos)
+        { 
+            if (linhaConfrontos.getRodada() == rodada)
+            {
+                if(linhaConfrontos.getTimeMandante().equals("Bye") || linhaConfrontos.getTimeVisitante().equals("Bye"))
+                {
+                    novaListaConfrontos.add(linhaConfrontos);
+                    continue;
+                }
+                for(int i = 0; i<linha.getRowCount();i++)
+                {   
+                    if( linha.getValueAt(i, 0).equals(linhaConfrontos.getTimeMandante()) )
+                    {
+
+                        int golM = Integer.parseInt(linha.getValueAt(i, 1).toString());
+                        int golV = Integer.parseInt(linha.getValueAt(i, 3).toString());
+                        Confrontos confrontos = new Confrontos(
+                                linhaConfrontos.getData(), 
+                                rodada, 
+                                linhaConfrontos.getTimeMandante(), 
+                                golM, 
+                                linhaConfrontos.getTimeVisitante(), 
+                                golV, 
+                                true
+                        );
+                        novaListaConfrontos.add(confrontos);
+                    }
+                }
+            }
+            else
+            {
+                novaListaConfrontos.add(linhaConfrontos);
+            }
+        }
+        
+        dados.Armazena(novaListaConfrontos);
+    }
+    
+    public ArrayList<Confrontos> EliminaBye(ArrayList<Confrontos> confrontos)
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<>();
+        
+        for( Confrontos linha: confrontos )
+        {
+            if( !linha.getTimeMandante().equals("Bye") && !linha.getTimeVisitante().equals("Bye"))
+            {
+                retorno.add(linha);
+            }
+        }
+        
+        return retorno;
     }
 }

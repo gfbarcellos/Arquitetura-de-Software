@@ -16,13 +16,13 @@ public class Dados {
     
     private final String FormaDados = "A";
     
-    public boolean VerificaDados( ) throws FileNotFoundException, IOException, ClassNotFoundException
+    public boolean VerificaDados( String valor ) throws FileNotFoundException, IOException, ClassNotFoundException
     {   
         
         if( this.FormaDados.equals("A") )
         {
             Arquivos arquivo = new Arquivos();
-            return arquivo.VerificaTorneio();
+            return arquivo.VerificaTorneio(valor);
         }
         else
         {

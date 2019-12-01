@@ -95,7 +95,6 @@ public class Classificacao {
     private Classificacao MontaInfoClassificacao ( Confrontos confronto, boolean mandante, int rodada )
     {
         Classificacao retorno = new Classificacao();
-           
         
         //Time inicial como visitante
         String time = confronto.getTimeVisitante();
@@ -158,6 +157,51 @@ public class Classificacao {
         return retorno;
     }
     
+    public ArrayList<Classificacao> OrdenaClassificacao(ArrayList<Classificacao> classificacao)
+    {
+        ArrayList<Classificacao> retorno = classificacao;
+        Classificacao auxClass = new Classificacao();
+        
+        int tamanho = classificacao.size();
+        
+        for (int i = 0; i < tamanho; i++) 
+        {
+            for (int j = 1; j < (tamanho - i); j++)
+            {   
+                //Verifica a quantidade de pontos
+                if( retorno.get(j).getPontos() > retorno.get(j - 1).getPontos())
+                {
+                    auxClass = retorno.get(j-1);
+                    retorno.set(j-1, retorno.get(j));
+                    retorno.set(j, auxClass);
+                }
+                else if( retorno.get(j).getPontos() == retorno.get(j - 1).getPontos() )//Se tem a mesma quantidade de pontos
+                {
+                    //Ordena pela melhor saldo
+                    if( retorno.get(j).getSaldo() > retorno.get(j-1).getSaldo() )
+                    {
+                        auxClass = retorno.get(j-1);
+                        retorno.set(j-1, retorno.get(j));
+                        retorno.set(j, auxClass);
+                    }
+                    else if ( retorno.get(j).getSaldo() == retorno.get(j-1).getSaldo() )//Se tem a mesma quantidade de saldo
+                    {
+                        //Ordena pelos gols pró
+                        if(retorno.get(j).getGolsP() > retorno.get(j-1).getGolsP())
+                        {
+                            auxClass = retorno.get(j-1);
+                            retorno.set(j-1, retorno.get(j));
+                            retorno.set(j, auxClass);
+                        }
+                    }
+                }
+            }
+            
+        }
+  
+        return retorno;
+    }
+    
     public ArrayList<Classificacao> MontaTabClassificacao( ArrayList<Confrontos> confrontos )
     {
         ArrayList<Classificacao> retorno = new ArrayList<>();
@@ -170,8 +214,19 @@ public class Classificacao {
             //Na primeira rodada os times seram inseridos na lista da tabela
             if (linha.getRodada() == 1)
             {
-                retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
-                retorno.add(classificacao.MontaInfoClassificacao(linha, false, linha.getRodada()));
+                if (linha.getTimeMandante().equals("Bye"))
+                {
+                    retorno.add(classificacao.MontaInfoClassificacao(linha, false, linha.getRodada()));
+                }
+                else if(linha.getTimeVisitante().equals("Bye"))
+                {
+                    retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
+                }
+                else
+                {
+                    retorno.add(classificacao.MontaInfoClassificacao(linha, true, linha.getRodada()));
+                    retorno.add(classificacao.MontaInfoClassificacao(linha, false, linha.getRodada()));
+                }
             }
             else 
             {   

@@ -24,29 +24,29 @@ import javax.swing.JOptionPane;
 public class Arquivos implements interfaces.IArmazenamento {
     
     @Override
-    public boolean VerificaTorneio( ) throws IOException
+    public boolean VerificaTorneio( String valor ) throws IOException
     {   
         //Faz a verificação da situação do arquivo
-        int info_arquivo = VerificaTimes();
-        
+        int info_arquivo = VerificaDado(valor);
         //Verifica o status do arquivo de times
         switch (info_arquivo) {
             case 1:
                 break;
             case 2:
-                JOptionPane.showMessageDialog(null, "Arquivo de times não existe", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Arquivo de "+ valor +" não existe", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
              default:
-                JOptionPane.showMessageDialog(null, "Arquivo de times está vazio", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Arquivo de " + valor +" está vazio", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
         }
         return true;
     }
     
     @Override
-    public int VerificaTimes() throws FileNotFoundException, IOException
+    public int VerificaDado(String valor) throws FileNotFoundException, IOException
     {
-        File file = new File("times.txt");
+         
+        File file = new File( valor + ".txt");
         //Verifica se o arquivo existe
         if(!file.exists()) 
         { 
@@ -110,7 +110,7 @@ public class Arquivos implements interfaces.IArmazenamento {
     @Override
     public ArrayList<Confrontos> DadosConfrontos() throws FileNotFoundException, IOException
     {
-        ArrayList<Confrontos> retorno = new ArrayList<Confrontos>();
+        ArrayList<Confrontos> retorno = new ArrayList<>();
         
         InputStream file = new FileInputStream("confrontos.txt");
 	InputStreamReader file_reader = new InputStreamReader(file);
