@@ -29,6 +29,16 @@ public class Torneio {
         JOptionPane.showMessageDialog(null, "Arquivo confrontos criado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
     }
     
+    public void CriaTorneioCMD(String data) throws IOException
+    {
+         
+        Dados dados = new Dados();
+        ArrayList<String> listaDeTimes  = dados.BuscaTimes();
+        List<Confrontos> listaConfrontos = new ArrayList<>();
+        
+        listaConfrontos = CriaConfrontos(listaDeTimes, data);
+        dados.Armazena(listaConfrontos);
+    }
        
     private LocalDate ConverteData(String data)
     {
