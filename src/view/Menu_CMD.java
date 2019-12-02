@@ -5,14 +5,16 @@
  */
 package view;
 
+import controller.Controller;
+import controller.Controller_CMD;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Torneio;
-import model.Confrontos;
 
 /**
  *
@@ -46,56 +48,51 @@ public class Menu_CMD {
                     System.out.println("Data inicial: \n");
                     data=sc.next();
                     
-                    Torneio torneio = new Torneio();
+                    //Cria objeto no controlador que chama o método
+                    Controller_CMD torneio = new Controller_CMD();
                     {
                         try {
-                            torneio.CriaTorneioCMD(data);
+                            //Chama o método que cria o torneio no controlador
+                            torneio.NovoTorneio(data);
                         } catch (IOException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
                             Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
+
                     System.out.println("Novo torneio criado com sucesso! \n");
                     break;
                 case 2:
                     
+                    //Cria objeto no controlador que chama o método
+                    Controller_CMD classificacao = new Controller_CMD();    
+                    {
+                        try {
+                            //Chama o método classificação no controlador
+                            classificacao.Classificacao();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     System.out.println("Classificação");
                     break;
                 case 3:
                     
-                    List<Confrontos> listaConfrontos = new ArrayList<>();
-                    listaConfrontos = CriaConfrontos(listaDeTimes, data);
-                    
-                    //Torneio retorno = new Torneio();
-                    //retorno = Torneio.BuscaConfrontosDaRodada();
-                    
-                    /*
-                    int rodada = 0;
-                    LocalDate dataRodada = LocalDate.now();
-                    String timeMandante = "0";
-                    int golMandante = 0;
-                    String timeVisitante = "0";
-                    int golVisitante = 0;
-                    boolean jogoRealizado = false;
-                    */                  
-                    
-                    //Confrontos confronto = new Confrontos(dataRodada, rodada, timeMandante, golMandante, timeVisitante, golVisitante, jogoRealizado);
-                    //confronto.Confrontos(dataRodada, rodada, timeMandante, golMandante, timeVisitante, golVisitante, jogoRealizado);
-                    //confronto.getRodada();
-                    
-                    /*
-                     public Confrontos(LocalDate data, int rodada, String timeMandante, 
-                    int golMandante, String timeVisitante, int golVisitante, boolean jogoRealizado) {
-                        this.data = data;
-                        this.rodada = rodada;
-                        this.timeMandante = timeMandante;
-                        this.golMandante = golMandante;
-                        this.timeVisitante = timeVisitante;
-                        this.golVisitante = golVisitante;
-                        this.jogoRealizado = jogoRealizado;
-                    }*/
-                    
+                    Controller_CMD confrontos = new Controller_CMD();
+                    {
+                        try {
+                            confrontos.Confrontos();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     System.out.println("Confrontos");
-                    break;                    
+                    break;                                        
                 case 0:
                     break;
                 default:

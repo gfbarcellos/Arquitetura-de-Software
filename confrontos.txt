@@ -1,6 +1,6 @@
-2019-12-04;1;Juventude;2;Gremio;0;true
-2019-12-04;1;Internacional;0;Caxias;3;true
-2019-12-08;2;Internacional;0;Juventude;0;false
-2019-12-08;2;Caxias;0;Gremio;0;false
-2019-12-11;3;Juventude;0;Caxias;0;false
-2019-12-11;3;Gremio;0;Internacional;0;false
+2020-02-05;1;Juventude;0;Gremio;0;false
+2020-02-05;1;Internacional;0;Caxias;0;false
+2020-02-09;2;Internacional;0;Juventude;0;false
+2020-02-09;2;Caxias;0;Gremio;0;false
+2020-02-12;3;Juventude;0;Caxias;0;false
+2020-02-12;3;Gremio;0;Internacional;0;false
