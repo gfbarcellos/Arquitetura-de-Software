@@ -38,7 +38,7 @@ public class BancoDeDados implements interfaces.IArmazenamento{
         
         if(info_tab == 1)
         {
-            JOptionPane.showMessageDialog(null, "Tabela de "+ valor +" está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
+
             return false;
         }
         else

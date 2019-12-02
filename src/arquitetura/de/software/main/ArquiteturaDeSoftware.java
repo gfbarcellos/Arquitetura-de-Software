@@ -10,8 +10,10 @@ import view.Login;
 public class ArquiteturaDeSoftware {
 
     public static void main(String[] args) {
+        
         Login tela = new Login();
         tela.setVisible(true);
+        System.out.println("arquitetura.de.software.main.ArquiteturaDeSoftware.main()");
     }
     
 }

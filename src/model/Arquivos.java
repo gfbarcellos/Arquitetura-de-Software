@@ -32,11 +32,7 @@ public class Arquivos implements interfaces.IArmazenamento {
         switch (info_arquivo) {
             case 1:
                 break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Arquivo de "+ valor +" não existe", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
              default:
-                JOptionPane.showMessageDialog(null, "Arquivo de " + valor +" está vazio", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
         }
         return true;

@@ -8,6 +8,7 @@ package controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Dados;
 import model.Torneio;
@@ -84,6 +85,7 @@ public class Controller {
         }
         else
         {
+            JOptionPane.showMessageDialog(null, "Lista de confrontos está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
              Menu();
         }
     }
@@ -99,6 +101,7 @@ public class Controller {
         }
         else
         {
+            JOptionPane.showMessageDialog(null, "Lista de times está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
              Menu();
         }
  

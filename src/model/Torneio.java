@@ -39,50 +39,12 @@ public class Torneio {
         listaConfrontos = CriaConfrontos(listaDeTimes, data);
         dados.Armazena(listaConfrontos);
     }
-       
-    private LocalDate ConverteData(String data)
-    {
-        String vetorData[] = data.split("/");
-        int dia = Integer.parseInt(vetorData[0]);
-        int mes = Integer.parseInt(vetorData[1]);
-        int ano = Integer.parseInt(vetorData[2]);
-        LocalDate dataAtual   = LocalDate.of(ano, mes, dia);
-        return dataAtual;
-    }
-    private LocalDate VerificaData(LocalDate dataAtual)
-    {
-        if(dataAtual.getDayOfWeek().equals("SUNDAY") || dataAtual.getDayOfWeek().equals("WEDNESDAY"))
-        {
-             return dataAtual;
-        }
-        else
-        {
-            return ProxData(dataAtual);
-        }
-         
-    }
-    
-    private LocalDate ProxData(LocalDate dataAtual)
-    {
-
-        LocalDate proxQuarta  = dataAtual.with(next(WEDNESDAY));
-        LocalDate proxDomingo = dataAtual.with(next(SUNDAY));
-        
-        //Se a próxima quarta for depois do próximo domingo
-        if (proxQuarta.isAfter(proxDomingo)) 
-        {   
-           return proxDomingo;
-        }
-        else
-        {
-            return proxQuarta;
-        }
-    }
     
     //private void CriaConfrontos(List<String> listaDeTimes, String data)
     private List<Confrontos> CriaConfrontos(ArrayList<String> listaDeTimes, String data)
     {   
         List<Confrontos> retornoConfrontos = new ArrayList<>();
+        Data cData = new Data();
         int metade = listaDeTimes.size() / 2;
         int num_time =  listaDeTimes.size();
         //Caso tenha número ímpar de times
@@ -104,10 +66,10 @@ public class Torneio {
         int timesAuxQuant = timesAux.size();
         
         //Converte a data de ínicio para o formato
-        LocalDate dataAtual = ConverteData(data);
+        LocalDate dataAtual = cData.ConverteData(data);
         
         //Verifica se o dia digitado já uma quarta ou domingo
-        dataAtual = VerificaData(dataAtual);
+        dataAtual = cData.VerificaData(dataAtual);
         for( int i = 0; i < ( num_time - 1 ); i++ )
         {
 
@@ -136,7 +98,7 @@ public class Torneio {
                 confrontos = new Confrontos( dataAtual , i+1 , timesAux.get(primeiroTime), 0, timesAux.get(segundoTime) , 0, false);
                 retornoConfrontos.add(confrontos);
             }
-            dataAtual = ProxData(dataAtual);
+            dataAtual = cData.ProxData(dataAtual);
             
         }
         
