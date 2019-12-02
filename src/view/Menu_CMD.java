@@ -37,7 +37,8 @@ public class Menu_CMD {
             System.out.println("\n     =========================");
             System.out.println(" |     1 - Iniciar torneio   |");
             System.out.println(" |     2 - Classificação     |");
-            System.out.println(" |     3 - Confrontos        |");            
+            System.out.println(" |     3 - Confrontos        |");
+            System.out.println(" |     4 - Exibir resultados |");
             System.out.println(" |     0 - Sair              |");
             System.out.println("     =========================\n");
 
@@ -77,7 +78,6 @@ public class Menu_CMD {
                             Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    System.out.println("Classificação");
                     break;
                 case 3:
                     int n_rodada;
@@ -94,8 +94,22 @@ public class Menu_CMD {
                             Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    System.out.println("Confrontos");
                     break;                                        
+                    case 4:
+                    System.out.println("Informe o número da rodada\n");
+                    n_rodada=sc.nextInt();
+                    
+                    Controller_CMD resultados = new Controller_CMD();
+                    {
+                        try {
+                            resultados.ExibirResultados(n_rodada);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;                                            
                 case 0:
                     break;
                 default:
