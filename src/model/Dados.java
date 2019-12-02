@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Dados {
     
-    private final String FormaDados = "B";
+    private final String FormaDados = "A";
     
     public boolean VerificaDados( String valor ) throws FileNotFoundException, IOException, ClassNotFoundException
     {   
