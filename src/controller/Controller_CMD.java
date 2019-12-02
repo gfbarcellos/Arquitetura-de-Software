@@ -92,10 +92,11 @@ public class Controller_CMD {
             //confrontos.setVisible(true);
             
             ArrayList<model.Confrontos> listaConfrontos = torneio.EliminaByeCMD(dados.BuscaDadosConfrontos());
+            ArrayList<model.Confrontos> novaListaConfrontos = listaConfrontos;
             //Confrontos linha = new Confrontos();
             
             int i, golMandante, golVisitante;
-            
+            int indice=0;
             for(Confrontos linha: listaConfrontos)
             {
                 if( !linha.getTimeMandante().equals("Bye") && !linha.getTimeVisitante().equals("Bye"))
@@ -109,16 +110,15 @@ public class Controller_CMD {
                         golVisitante=sc.nextInt();
                         linha.setGolMandante(golVisitante);
                         System.out.println(linha.getTimeMandante()+" "+linha.getGolMandante()+" x "+linha.getGolVisitante()+" "+linha.getTimeVisitante());
+                        novaListaConfrontos.set(indice, linha);
                     }
                 }
+                indice++;
             }
+            dados.Armazena(novaListaConfrontos);
 
         }
-        else
-        {
-            //JOptionPane.showMessageDialog(null, "Lista de confrontos está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
-            exibe_menu();
-        }
+
     }
     
         public void ExibirResultados(int n_rodada) throws IOException, FileNotFoundException, ClassNotFoundException
@@ -147,10 +147,7 @@ public class Controller_CMD {
             }
 
         }
-        else
-        {
-            exibe_menu();
-        }
+
     }
     
     public void TelaData() throws IOException, FileNotFoundException, ClassNotFoundException

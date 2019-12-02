@@ -13,7 +13,6 @@ public class ArquiteturaDeSoftware {
         
         Login tela = new Login();
         tela.setVisible(true);
-        System.out.println("arquitetura.de.software.main.ArquiteturaDeSoftware.main()");
     }
     
 }
