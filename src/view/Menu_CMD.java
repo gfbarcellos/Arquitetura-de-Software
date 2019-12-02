@@ -80,11 +80,14 @@ public class Menu_CMD {
                     System.out.println("Classificação");
                     break;
                 case 3:
+                    int n_rodada;
+                    System.out.println("Informe o número da rodada\n");
+                    n_rodada=sc.nextInt();
                     
                     Controller_CMD confrontos = new Controller_CMD();
                     {
                         try {
-                            confrontos.Confrontos();
+                            confrontos.Confrontos(n_rodada);
                         } catch (IOException ex) {
                             Logger.getLogger(Menu_CMD.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ClassNotFoundException ex) {

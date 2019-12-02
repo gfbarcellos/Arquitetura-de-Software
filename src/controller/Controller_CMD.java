@@ -8,19 +8,16 @@ package controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.Dados;
 import model.Torneio;
 import view.Classificacao;
 import view.NovoTorneio;
-import view.Confrontos;
-import view.Menu;
-import view.Menu_CMD;
+//import view.Confrontos;
+import model.Confrontos;
 import static view.Menu_CMD.exibe_menu;
 
 public class Controller_CMD {
-    
+
     public void Sair() {
         System.exit(0);
     }
@@ -69,19 +66,35 @@ public class Controller_CMD {
  
     }
     
-    public void Confrontos() throws IOException, FileNotFoundException, ClassNotFoundException
+    public void Confrontos(int n_rodada) throws IOException, FileNotFoundException, ClassNotFoundException
     {
         Dados dados = new Dados();
         Torneio torneio = new Torneio();
         
         if (dados.VerificaDados("confrontos")) 
         {
+                        
             Confrontos confrontos = new Confrontos();
             //confrontos.setVisible(true);
             
-            ArrayList<model.Confrontos> listaConfrontos = torneio.EliminaBye(dados.BuscaDadosConfrontos());
+            ArrayList<model.Confrontos> listaConfrontos = torneio.EliminaByeCMD(dados.BuscaDadosConfrontos());
+            Confrontos linha = new Confrontos();
             
-            //System.out.println(listaConfrontos);
+            int i;
+            /*for(i=0;i<listaConfrontos.size();i++){
+                System.out.println(listaConfrontos.get(i));
+            }*/
+            
+            //for( model.Confrontos linha: confrontos )
+            for(i=0;i<listaConfrontos.size();i++)
+            {
+                if( !linha.getTimeMandante().equals("Bye") && !linha.getTimeVisitante().equals("Bye"))
+                {
+                    if(n_rodada == linha.getRodada()){
+                        System.out.println(linha.getTimeMandante()+" x "+linha.getTimeVisitante());
+                    }
+                }
+            }
             
             //confrontos.AdicionaComboBox(torneio.NumeroDeRodadas(listaConfrontos));
             //confrontos.CarregaRodada(torneio.BuscaConfrontosDaRodada(1, listaConfrontos));
@@ -89,7 +102,7 @@ public class Controller_CMD {
         else
         {
             //JOptionPane.showMessageDialog(null, "Lista de confrontos está vazia", "Erro", JOptionPane.ERROR_MESSAGE);
-             exibe_menu();
+            exibe_menu();
         }
     }
     
@@ -110,7 +123,8 @@ public class Controller_CMD {
         }
  
     }
-    
+  
+/*    
     public void Pesquisar(int rodada) throws IOException
     {
         Dados dados = new Dados();
@@ -129,5 +143,5 @@ public class Controller_CMD {
         Torneio torneio = new Torneio();
         torneio.MontaResultadosDaRodada(linha, rodada);
     }
-         
+*/         
 }

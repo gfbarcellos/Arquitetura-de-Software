@@ -190,4 +190,19 @@ public class Torneio {
         
         return retorno;
     }
+    
+        public ArrayList<Confrontos> EliminaByeCMD(ArrayList<Confrontos> confrontos)
+    {
+        ArrayList<Confrontos> retorno = new ArrayList<>();
+        
+        for( Confrontos linha: confrontos )
+        {
+            if( !linha.getTimeMandante().equals("Bye") && !linha.getTimeVisitante().equals("Bye"))
+            {
+                retorno.add(linha);
+            }
+        }
+        
+        return retorno;
+    }
 }

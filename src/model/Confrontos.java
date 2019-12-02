@@ -31,6 +31,10 @@ public class Confrontos {
         this.golVisitante = golVisitante;
         this.jogoRealizado = jogoRealizado;
     }
+
+    public Confrontos() {
+        
+    }
     
     public LocalDate getData() {
         return data;
